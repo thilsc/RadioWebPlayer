@@ -44,6 +44,7 @@ type
     AbrirPlayer1: TMenuItem;
     ActExibirOcultar: TAction;
     procedure FormCreate(Sender: TObject);
+    procedure trayClick(Sender: TObject);
     procedure ActAtualizarExecute(Sender: TObject);
     procedure ActFecharExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -121,6 +122,11 @@ begin
     tray.Hint := 'Radio Web Player - '+LstLinks.Items[RadioIndex];
     pnlStatus.Caption := 'Executando rádio: '+LstLinks.Items[RadioIndex];
   end;
+end;
+
+procedure TfrmRadioWebPlayer.trayClick(Sender: TObject);
+begin
+  ActExibirOcultar.Execute;
 end;
 
 procedure TfrmRadioWebPlayer.ActMudoExecute(Sender: TObject);

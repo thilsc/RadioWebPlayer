@@ -6162,6 +6162,7 @@ object frmRadioWebPlayer: TfrmRadioWebPlayer
     IconIndex = 0
     PopupMenu = PopupMenu1
     MinimizeToTray = True
+    OnClick = trayClick
     Left = 128
     Top = 136
   end

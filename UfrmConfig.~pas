@@ -84,9 +84,9 @@ begin
   Params[0].Value:= IfThen(chkIniciar.Checked,'S','N');
   Params[1].Name := 'ArquivoRadios';
   Params[1].Value:= edtArqConfig.Text;
-  Params[2].Name := 'ExibirMsgErro';
+  Params[2].Name := 'ExibirMsgErro'
   Params[2].Value:= IfThen(chkExibirMsg.Checked, 'S', 'N');
-  Params[3].Name := 'IniciarMinimizado';
+  Params[3].Name := 'IniciarMinimizado'
   Params[3].Value:= IfThen(chkIniciarMinimizado.Checked, 'S', 'N');
 
   GravarConfiguracoes(Params);

@@ -191,7 +191,7 @@ ClientHeight=60
 
 [PropertyInspector]
 Create=1
-Visible=0
+Visible=1
 State=0
 Left=0
 Top=0
@@ -206,7 +206,7 @@ LRDockWidth=190
 Dockable=1
 SplitPos=126
 ArrangeBy=Name
-SelectedItem=Name
+SelectedItem=IconList
 ExpandedItems=Anchors,Column,DataBinding,DataController,FilterOptions,Font,Options,OptionsData,Properties,ProviderFlags,Styles,Title,TitleFont
 HiddenCategories=
 
@@ -540,7 +540,7 @@ Dockable=1
 
 [MessageView@EditWindow0]
 Create=1
-Visible=1
+Visible=0
 State=0
 Left=0
 Top=0
@@ -574,7 +574,7 @@ TBDockHeight=140
 LRDockWidth=283
 Dockable=1
 TabPosition=0
-ActiveTab=Messages
+ActiveTab=Call Stack
 TabDockClients=MessageView@EditWindow0,CallStackWindow,WatchWindow,LocalVarsWindow
 
 [DockSite1]
@@ -594,6 +594,6 @@ TBDockHeight=599
 LRDockWidth=266
 Dockable=1
 TabPosition=2
-ActiveTab=Breakpoint List
+ActiveTab=Object Inspector
 TabDockClients=PropertyInspector,ProjectManager,BreakpointWindow,fmGrepResults
 
