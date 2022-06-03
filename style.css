@@ -134,7 +134,7 @@ body .container .player .info-box .track-info-box:after {
 
 body .container .player .progress-box {
     float: left;
-    min-width: 270px;
+    min-width: 220px;
     position: relative;
 }
 
@@ -172,7 +172,7 @@ body .container .player .progress-box .progress-cell .progress .progress-indicat
 
 body .container .player .controls-box {
     bottom: 10px;
-    left: 350px;
+    left: 300px;
     position: absolute;
 }
 
@@ -240,10 +240,10 @@ body .container .player:after {
 
 body .container .play-list {
     display: block;
-    margin: 0 auto 20px auto;
+    /*margin: 0 auto 20px auto;*/
     overflow-y: scroll;
     height: 144px;
-    width: 100%;    
+    width: 415px; /*100%;*/
 }
 
 body .container .play-list .play-list-row {
