@@ -1,6 +1,5 @@
 @charset "UTF-8";
 @import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.css";
-
 .screen-reader-text {
     /* Reusable, toolbox kind of class */
     position: absolute;
@@ -32,12 +31,13 @@ body .container .player {
     height: 60px;
     margin: 0;
     position: relative;
-    width: 400px;
+    width: 100%;
     /* Small devices (tablets, 768px and up) */
     /* Medium devices (desktops, 992px and up) */
     /* Large devices (large desktops, 1200px and up) */
     *zoom: 1;
 }
+
 @media (min-width: 768px) and (max-width: 991px) {
     body .container .player {
         width: 470px;
@@ -107,8 +107,7 @@ body .container .player .info-box .track-info-box {
     font-size: 12px;
     margin: 0 0 6px 0;
     visibility: hidden;
-    width: 400px;
-    *zoom: 1;
+    width: 100%;
 }
 
 body .container .player .info-box .track-info-box .track-title-text {
@@ -120,10 +119,13 @@ body .container .player .info-box .track-info-box .audio-time {
     padding: 0 0 0 5px;
     width: 90px;
 }
-body .container .player .info-box .track-info-box:before, body .container .player .info-box .track-info-box:after {
+
+body .container .player .info-box .track-info-box:before,
+body .container .player .info-box .track-info-box:after {
     content: " ";
     display: table;
 }
+
 body .container .player .info-box .track-info-box:after {
     clear: both;
     display: block;
@@ -171,15 +173,18 @@ body .container .player .progress-box .progress-cell .progress .progress-indicat
 }
 
 body .container .player .controls-box {
-    bottom: 10px;
-    left: 300px;
-    position: absolute;
+    top: 38px;
+    left: 29px;
+    display: block;
+    zoom: 1.5;
+    position: relative;
 }
 
 body .container .player .controls-box .previous-track-btn {
     cursor: pointer;
     display: inline-block;
 }
+
 body .container .player .controls-box .previous-track-btn:before {
     content: "";
     font: 1em "FontAwesome";
@@ -189,6 +194,7 @@ body .container .player .controls-box .next-track-btn {
     cursor: pointer;
     display: inline-block;
 }
+
 body .container .player .controls-box .next-track-btn:before {
     content: "";
     font: 1em "FontAwesome";
@@ -198,6 +204,7 @@ body .container .player .controls-box .up-volume-btn {
     cursor: pointer;
     display: inline-block;
 }
+
 body .container .player .controls-box .up-volume-btn:before {
     content: "\f028";
     font: 1em "FontAwesome";
@@ -207,6 +214,7 @@ body .container .player .controls-box .down-volume-btn {
     cursor: pointer;
     display: inline-block;
 }
+
 body .container .player .controls-box .down-volume-btn:before {
     content: "\f027";
     font: 1em "FontAwesome";
@@ -216,16 +224,19 @@ body .container .player .controls-box .mute-toggle-btn {
     cursor: pointer;
     display: inline-block;
 }
+
 body .container .player .controls-box .mute-toggle-btn .mute-btn:before {
     content: "\f6a9";
     font: 1em "FontAwesome";
 }
+
 body .container .player .controls-box .mute-toggle-btn .unmute-btn:before {
     content: "\f028";
     font: 1em "FontAwesome";
 }
 
-body .container .player:before, body .container .player:after {
+body .container .player:before,
+body .container .player:after {
     content: " ";
     display: table;
 }
@@ -239,11 +250,10 @@ body .container .player:after {
 }
 
 body .container .play-list {
-    display: block;
-    /*margin: 0 auto 20px auto;*/
-    overflow-y: scroll;
-    height: 144px;
-    width: 415px; /*100%;*/
+    display: inline-table;
+    overflow: hidden;
+    margin-top: 18px;
+    zoom: 1.3;
 }
 
 body .container .play-list .play-list-row {
@@ -277,16 +287,20 @@ body .container .play-list .play-list-row .small-toggle-btn {
 }
 
 body .container .play-list .play-list-row .small-toggle-btn .small-play-btn {
-    display: inline-block;
+    display: block;
+    margin-top: -3px;
 }
+
 body .container .play-list .play-list-row .small-toggle-btn .small-play-btn:before {
     content: "";
     font: 0.85em "FontAwesome";
 }
 
 body .container .play-list .play-list-row .small-toggle-btn .small-pause-btn {
-    display: inline-block;
+    display: block;
+    margin-top: -3px;
 }
+
 body .container .play-list .play-list-row .small-toggle-btn .small-pause-btn:before {
     content: "";
     font: 0.85em "FontAwesome";
@@ -294,23 +308,31 @@ body .container .play-list .play-list-row .small-toggle-btn .small-pause-btn:bef
 
 body .container .play-list .play-list-row .track-number {
     display: inline-block;
+    margin-right: 10px;
 }
+
 body .container .play-list .play-list-row .track-title {
     display: inline-block;
 }
+
 body .container .play-list .play-list-row .track-title .playlist-track {
     text-decoration: none;
 }
+
 body .container .play-list .play-list-row .track-title .playlist-track:hover {
     text-decoration: underline;
 }
+
 body .container .play-list .play-list-row .track-title.active-track {
     font-weight: bold;
 }
-body .container .play-list .play-list-row:before, body .container .play-list .play-list-row:after {
+
+body .container .play-list .play-list-row:before,
+body .container .play-list .play-list-row:after {
     content: " ";
     display: table;
 }
+
 body .container .play-list .play-list-row:after {
     clear: both;
     display: block;
