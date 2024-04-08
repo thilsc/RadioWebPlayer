@@ -3,7 +3,7 @@
 	{ "station_name": "Kiss FM", "src": "http://cloud2.cdnseguro.com:23538/;" },
 	{ "station_name": "Rádio Cidade", "src": "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIOCIDADEAAC.aac" },
 	{ "station_name": "JB FM ", "src": "https://playerservices.streamtheworld.com/api/livestream-redirect/JBFMAAC1.aac" },
-	{ "station_name": "Sulamérica Paradiso FM", "src": "https://playerservices.streamtheworld.com/api/livestream-redirect/SULAMERICAAAC.aac" },
+	{ "station_name": "Amil Paradiso FM", "src": "https://playerservices.streamtheworld.com/api/livestream-redirect/PARADISO.mp3" },
 	{ "station_name": "Nova Brasil FM Rio ", "src": "https://playerservices.streamtheworld.com/api/livestream-redirect/NOVABRASIL_RIOAAC.aac" },
 	{ "station_name": "Antena 1 Rio ", "src": "http://a1rj.streams.com.br:7801/stream" },
 	{ "station_name": "Antena 1 SP ", "src": "https://antenaone.crossradio.com.br/stream/1;" },
