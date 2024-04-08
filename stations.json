@@ -16,7 +16,7 @@
     { "station_name": "Mundo Livre FM Maringá ", "src": "http://up-continental.webnow.com.br/cultura.mp3" },
     { "station_name": "Mundo Livre FM Curitiba ", "src": "https://rrdns-continental.webnow.com.br/mundolivre.mp3" },
     { "station_name": "91 Rock - Curitiba ", "src": "https://servidor40-4.brlogic.com:8044/live" },
-    { "station_name": "Tribuna FM - Petrópolis ", "src": "https://str1.streamhostpg.com.br:8032/stream?1607566096034" },
+    { "station_name": "Tribuna FM - Petrópolis ", "src": "https://radio.saopaulo01.com.br/8238/stream" },
     { "station_name": "Rádio Unicesumar - Maringá", "src": "http://radio.cesumar.br:8000/;stream.mp3" },
     { "station_name": "UEM FM - Maringá ", "src": "http://186.233.153.151:8000/;" }
 ]
