@@ -12,7 +12,7 @@
     { "station_name": "Alvorada FM - BH ", "src": "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO_ALVORADAAAC.aac" },
     { "station_name": "Atlântico Sul - Fortaleza", "src": "http://142.44.230.74:9026/live" },
     { "station_name": "Biss FM - Maringá ", "src": "https://ice.fabricahost.com.br/maiafm?1628601506112" },
-    { "station_name": "Rádio Mais FM - Maringá ", "src": "https://f50.fabricahost.com.br/maismaringapr?f=1656517123N06146c63fce1f4b2bdf7fe66a75a4c72&r=aHR0cHM6Ly93d3cucmFkaW9zLmNvbS5ici8=" },
+    { "station_name": "Rádio Mais FM - Maringá ", "src": "https://ice.fabricahost.com.br/maismaringapr" },
     { "station_name": "Mundo Livre FM Maringá ", "src": "http://up-continental.webnow.com.br/cultura.mp3" },
     { "station_name": "Mundo Livre FM Curitiba ", "src": "https://rrdns-continental.webnow.com.br/mundolivre.mp3" },
     { "station_name": "91 Rock - Curitiba ", "src": "https://servidor40-4.brlogic.com:8044/live" },
