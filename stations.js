@@ -1,6 +1,6 @@
 async function populate() {
 
-    const requestURL = 'https://raw.githubusercontent.com/thilsc/RadioWebPlayer/html5/stations.json';
+    const requestURL = 'https://raw.githubusercontent.com/thilsc/RadioWebPlayer/refs/heads/master/stations.json';
     const request = new Request(requestURL);
     const response = await fetch(request);
     const stationsText = await response.text();
