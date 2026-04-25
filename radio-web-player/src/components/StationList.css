@@ -60,9 +60,16 @@
   width: 48px;
   height: 48px;
   border-radius: 8px;
-  object-fit: cover;
+  object-fit: contain;
   background: var(--bg-primary);
   flex-shrink: 0;
+  overflow: hidden;
+}
+
+.station-item-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .station-item-info {
@@ -93,6 +100,14 @@
   padding: 2px 8px;
   border-radius: 4px;
   font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+
+.station-item-genre:hover {
+  background: var(--accent-color);
+  color: white;
 }
 
 .play-indicator {

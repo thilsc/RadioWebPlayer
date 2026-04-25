@@ -5,50 +5,41 @@ node_modules/
 # Build outputs
 dist/
 build/
-target/
+coverage/
+htmlcov/
+*.log
+*.tmp
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
 
 # Python
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
-*.py~
 .Python
-env/
-venv/
-.venv/
-.ENV
-.ENV.local
-.env
-.env.local
-.env.*
+*.so
 
-# Logs
-*.log
+# Compiled files
+*.class
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.a
+*.out
 
-# Editor/IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*.tmp
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Coverage
-coverage/
-htmlcov/
-.coverage
-
-# MyPy
-.mypy_cache/
-
-# Pytest
-.pytest_cache/
-
-# Compressed files
+# Compression
 *.zip
 *.gz
 *.tar
@@ -67,8 +58,8 @@ htmlcov/
 *.Z
 *.lz
 *.lzo
-*.tar.gz
-*.tar.bz2
-*.tar.xz
-*.tar.zst
+
+# System
+.DS_Store
+Thumbs.db
 ```

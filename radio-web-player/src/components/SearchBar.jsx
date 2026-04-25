@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './SearchBar.css';
 
-const SearchBar = ({ onSearchResults, onLoading }) => {
+const SearchBar = ({ onSearchResults, onLoading, onFilterByGenre }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCountry, setSelectedCountry] = useState('');
   const [selectedTag, setSelectedTag] = useState('');
@@ -10,6 +10,10 @@ const SearchBar = ({ onSearchResults, onLoading }) => {
   const [showFilters, setShowFilters] = useState(false);
   const [detectedCountry, setDetectedCountry] = useState('');
   const [isDetecting, setIsDetecting] = useState(true);
+  const [offset, setOffset] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const limit = 50;
   
   // Detectar país do usuário via geolocalização IP
   useEffect(() => {
@@ -22,7 +26,7 @@ const SearchBar = ({ onSearchResults, onLoading }) => {
             setDetectedCountry(data.country_name);
             setSelectedCountry(data.country_name);
             // Auto-buscar estações do país do usuário
-            performSearchByCountry(data.country_name);
+            performSearchByCountry(data.country_name, 0);
           } else {
             setIsDetecting(false);
           }
@@ -73,8 +77,13 @@ const SearchBar = ({ onSearchResults, onLoading }) => {
   }, []);
 
   // Função de busca por país (para geolocalização automática)
-  const performSearchByCountry = async (country) => {
-    onLoading(true);
+  const performSearchByCountry = async (country, offsetValue = 0, append = false) => {
+    if (!append) {
+      onLoading(true);
+      setOffset(0);
+    } else {
+      setIsLoadingMore(true);
+    }
     
     try {
       let url = `https://de1.api.radio-browser.info/json/stations/bycountry/${encodeURIComponent(country)}?`;
@@ -82,7 +91,8 @@ const SearchBar = ({ onSearchResults, onLoading }) => {
 
       params.push('order=votes');
       params.push('reverse=true');
-      params.push('limit=50');
+      params.push(`limit=${limit}`);
+      params.push(`offset=${offsetValue}`);
       params.push('hidebroken=true');
 
       url += params.join('&');
@@ -95,7 +105,7 @@ const SearchBar = ({ onSearchResults, onLoading }) => {
         const formattedStations = stations
           .filter(station => station.url_resolved)
           .map((station, index) => ({
-            id: station.stationuuid || index,
+            id: station.stationuuid || `${index}-${offsetValue}`,
             name: station.name,
             frequency: station.bitrate ? `${station.bitrate} kbps` : 'Online',
             streamUrl: station.url_resolved,
@@ -107,22 +117,41 @@ const SearchBar = ({ onSearchResults, onLoading }) => {
           }))
           .sort((a, b) => b.votes - a.votes);
 
-        onSearchResults(formattedStations);
+        if (append) {
+          // Adicionar às estações existentes
+          onSearchResults(prev => [...prev, ...formattedStations], true);
+        } else {
+          onSearchResults(formattedStations);
+        }
+        
+        setHasMore(stations.length === limit);
       } else {
-        onSearchResults([]);
+        if (!append) {
+          onSearchResults([]);
+        }
+        setHasMore(false);
       }
     } catch (error) {
       console.error('Erro na busca:', error);
-      onSearchResults([]);
+      if (!append) {
+        onSearchResults([]);
+      }
+      setHasMore(false);
     } finally {
       onLoading(false);
       setIsDetecting(false);
+      setIsLoadingMore(false);
     }
   };
 
   // Função de busca geral
-  const performSearch = async () => {
-    onLoading(true);
+  const performSearch = async (offsetValue = 0, append = false) => {
+    if (!append) {
+      onLoading(true);
+      setOffset(0);
+    } else {
+      setIsLoadingMore(true);
+    }
     
     try {
       let url = 'https://de1.api.radio-browser.info/json/stations/search?';
@@ -142,7 +171,86 @@ const SearchBar = ({ onSearchResults, onLoading }) => {
 
       params.push('order=votes');
       params.push('reverse=true');
-      params.push('limit=50');
+      params.push(`limit=${limit}`);
+      params.push(`offset=${offsetValue}`);
+      params.push('hidebroken=true');
+
+      url += params.join('&');
+
+      const response = await fetch(url);
+      
+      if (response.ok) {
+        const stations = await response.json();
+        
+        const formattedStations = stations
+          .filter(station => station.url_resolved)
+          .map((station, index) => ({
+            id: station.stationuuid || `${index}-${offsetValue}`,
+            name: station.name,
+            frequency: station.bitrate ? `${station.bitrate} kbps` : 'Online',
+            streamUrl: station.url_resolved,
+            logo: station.favicon || `https://ui-avatars.com/api/?name=${encodeURIComponent(station.name)}&background=random&size=128`,
+            genre: station.tags.split(',')[0] || 'Geral',
+            country: station.country,
+            votes: station.votes,
+            language: station.language || 'Unknown'
+          }))
+          .sort((a, b) => b.votes - a.votes);
+
+        if (append) {
+          onSearchResults(prev => [...prev, ...formattedStations], true);
+        } else {
+          onSearchResults(formattedStations);
+        }
+        
+        setHasMore(stations.length === limit);
+      } else {
+        if (!append) {
+          onSearchResults([]);
+        }
+        setHasMore(false);
+      }
+    } catch (error) {
+      console.error('Erro na busca:', error);
+      if (!append) {
+        onSearchResults([]);
+      }
+      setHasMore(false);
+    } finally {
+      onLoading(false);
+      setIsLoadingMore(false);
+    }
+  };
+
+  // Função para carregar mais estações
+  const loadMore = () => {
+    const newOffset = offset + limit;
+    setOffset(newOffset);
+    
+    if (selectedCountry && !searchTerm && !selectedTag) {
+      performSearchByCountry(selectedCountry, newOffset, true);
+    } else {
+      performSearch(newOffset, true);
+    }
+  };
+
+  // Filtrar por gênero no país atual
+  const handleFilterByGenre = async (genre, country) => {
+    if (!country) return;
+    
+    onLoading(true);
+    setSearchTerm('');
+    setSelectedTag(genre);
+    setShowFilters(true);
+    
+    try {
+      let url = `https://de1.api.radio-browser.info/json/stations/bycountry/${encodeURIComponent(country)}?`;
+      const params = [];
+
+      params.push(`tag=${encodeURIComponent(genre)}`);
+      params.push('order=votes');
+      params.push('reverse=true');
+      params.push(`limit=${limit}`);
       params.push('hidebroken=true');
 
       url += params.join('&');
@@ -168,16 +276,26 @@ const SearchBar = ({ onSearchResults, onLoading }) => {
           .sort((a, b) => b.votes - a.votes);
 
         onSearchResults(formattedStations);
+        setHasMore(stations.length === limit);
       } else {
         onSearchResults([]);
+        setHasMore(false);
       }
     } catch (error) {
-      console.error('Erro na busca:', error);
+      console.error('Erro ao filtrar por gênero:', error);
       onSearchResults([]);
+      setHasMore(false);
     } finally {
       onLoading(false);
     }
   };
+
+  // Expor handleFilterByGenre para o componente pai
+  useEffect(() => {
+    if (onFilterByGenre) {
+      onFilterByGenre(handleFilterByGenre);
+    }
+  }, [detectedCountry]);
 
   // Buscar ao pressionar Enter
   const handleKeyPress = (e) => {
@@ -191,6 +309,7 @@ const SearchBar = ({ onSearchResults, onLoading }) => {
     setSearchTerm('');
     setSelectedCountry('');
     setSelectedTag('');
+    setOffset(0);
     onSearchResults([]);
   };
 
@@ -277,6 +396,18 @@ const SearchBar = ({ onSearchResults, onLoading }) => {
             <svg viewBox="0 0 24 24" width="14" height="14">
               <path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
             </svg>
+          </button>
+        </div>
+      )}
+      
+      {hasMore && (
+        <div className="load-more-container">
+          <button 
+            onClick={loadMore} 
+            className="load-more-btn"
+            disabled={isLoadingMore}
+          >
+            {isLoadingMore ? 'Carregando...' : 'Carregar Mais'}
           </button>
         </div>
       )}
