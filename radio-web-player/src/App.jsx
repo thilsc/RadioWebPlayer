@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import RadioPlayer from './components/RadioPlayer';
 import StationList from './components/StationList';
+import SearchBar from './components/SearchBar';
 import stations from './data/stations';
 import './App.css';
 
@@ -8,13 +9,25 @@ function App() {
   const [currentStation, setCurrentStation] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(75);
+  const [allStations, setAllStations] = useState(stations);
+  const [isLoading, setIsLoading] = useState(false);
   const audioRef = useRef(null);
-
+  
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = volume / 100;
     }
   }, [volume]);
+
+  const handleSearchResults = (results) => {
+    setAllStations(results.length > 0 ? results : stations);
+    setCurrentStation(null);
+    setIsPlaying(false);
+  };
+
+  const handleLoading = (loading) => {
+    setIsLoading(loading);
+  };
 
   const handleSelectStation = (station) => {
     if (currentStation?.id === station.id) {
@@ -54,10 +67,22 @@ function App() {
     <div className="app">
       <header className="app-header">
         <h1>📻 Web Rádio Player</h1>
-        <p>Ouça suas estações de rádio favoritas</p>
+        <p>Ouça rádios de todo o mundo</p>
       </header>
 
       <main className="app-main">
+        <SearchBar 
+          onSearchResults={handleSearchResults}
+          onLoading={handleLoading}
+        />
+
+        {isLoading && (
+          <div className="loading-indicator">
+            <div className="spinner"></div>
+            <p>Buscando estações...</p>
+          </div>
+        )}
+
         <RadioPlayer
           currentStation={currentStation}
           isPlaying={isPlaying}
@@ -67,7 +92,7 @@ function App() {
         />
 
         <StationList
-          stations={stations}
+          stations={allStations}
           currentStation={currentStation}
           onSelectStation={handleSelectStation}
         />

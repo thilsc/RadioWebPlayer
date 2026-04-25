@@ -1,52 +1,56 @@
 .station-list-container {
-  background: white;
-  border-radius: 20px;
-  padding: 30px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f0f0f0;
 }
 
 .list-title {
-  font-size: 24px;
-  color: #333;
-  margin: 0 0 20px 0;
-  padding-bottom: 15px;
-  border-bottom: 2px solid #f0f0f0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 16px 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .station-list {
-  display: grid;
-  gap: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 500px;
+  overflow-y: auto;
 }
 
 .station-item {
   display: flex;
   align-items: center;
-  gap: 15px;
-  padding: 15px;
-  border-radius: 12px;
-  background: #f8f9fa;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  background: transparent;
   cursor: pointer;
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
 }
 
 .station-item:hover {
-  background: #e9ecef;
-  transform: translateX(5px);
+  background: #f9fafb;
+  border-color: #e5e5e5;
 }
 
 .station-item.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border-color: #667eea;
+  background: #f5f5f5;
+  border-color: #d4d4d4;
 }
 
 .station-item-logo {
-  width: 60px;
-  height: 60px;
-  border-radius: 10px;
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
   overflow: hidden;
-  background: white;
+  background: #f5f5f5;
   flex-shrink: 0;
 }
 
@@ -58,55 +62,47 @@
 
 .station-item-info {
   flex: 1;
+  min-width: 0;
 }
 
 .station-item-name {
-  font-size: 18px;
-  font-weight: bold;
-  margin: 0 0 5px 0;
-  color: #333;
-}
-
-.station-item.active .station-item-name {
-  color: white;
+  font-size: 15px;
+  font-weight: 500;
+  color: #1a1a1a;
+  margin: 0 0 2px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .station-item-frequency {
-  font-size: 14px;
-  color: #666;
-  margin: 0 0 5px 0;
-}
-
-.station-item.active .station-item-frequency {
-  color: rgba(255, 255, 255, 0.9);
+  font-size: 13px;
+  color: #737373;
+  margin: 0 0 4px 0;
 }
 
 .station-item-genre {
   font-size: 12px;
-  color: #888;
-  background: #e9ecef;
-  padding: 3px 10px;
-  border-radius: 15px;
+  color: #525252;
+  background: #f5f5f5;
+  padding: 2px 8px;
+  border-radius: 12px;
   display: inline-block;
-}
-
-.station-item.active .station-item-genre {
-  background: rgba(255, 255, 255, 0.3);
-  color: white;
 }
 
 .playing-indicator {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  font-weight: bold;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #16a34a;
 }
 
 .dot {
-  width: 10px;
-  height: 10px;
-  background: #4ade80;
+  width: 8px;
+  height: 8px;
+  background: #16a34a;
   border-radius: 50%;
   animation: pulse 1.5s ease-in-out infinite;
 }
@@ -122,21 +118,44 @@
   }
 }
 
+/* Scrollbar styling */
+.station-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.station-list::-webkit-scrollbar-track {
+  background: #f5f5f5;
+  border-radius: 3px;
+}
+
+.station-list::-webkit-scrollbar-thumb {
+  background: #d4d4d4;
+  border-radius: 3px;
+}
+
+.station-list::-webkit-scrollbar-thumb:hover {
+  background: #a3a3a3;
+}
+
 @media (max-width: 600px) {
   .station-list-container {
-    padding: 20px;
+    padding: 16px;
   }
 
   .station-item {
-    padding: 12px;
+    padding: 10px;
   }
 
   .station-item-logo {
-    width: 50px;
-    height: 50px;
+    width: 44px;
+    height: 44px;
   }
 
   .station-item-name {
-    font-size: 16px;
+    font-size: 14px;
+  }
+
+  .station-item-frequency {
+    font-size: 12px;
   }
 }
