@@ -1,0 +1,232 @@
+.radio-player {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px;
+  padding: 30px;
+  color: white;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  margin-bottom: 30px;
+}
+
+.player-header {
+  margin-bottom: 30px;
+}
+
+.station-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.station-logo {
+  width: 100px;
+  height: 100px;
+  border-radius: 15px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.station-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.station-details {
+  flex: 1;
+}
+
+.station-name {
+  font-size: 28px;
+  font-weight: bold;
+  margin: 0 0 5px 0;
+}
+
+.station-frequency {
+  font-size: 16px;
+  opacity: 0.9;
+  margin: 0 0 5px 0;
+}
+
+.station-genre {
+  font-size: 14px;
+  opacity: 0.8;
+  margin: 0;
+  background: rgba(255, 255, 255, 0.2);
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.no-station {
+  text-align: center;
+  padding: 20px;
+}
+
+.no-station h2 {
+  margin: 0 0 10px 0;
+  font-size: 24px;
+}
+
+.no-station p {
+  opacity: 0.8;
+  margin: 0;
+}
+
+.player-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.play-pause-btn {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: none;
+  background: white;
+  color: #667eea;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.play-pause-btn:hover:not(:disabled) {
+  transform: scale(1.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.play-pause-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.play-pause-btn.playing {
+  background: #ff6b6b;
+  color: white;
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  max-width: 300px;
+}
+
+.volume-control svg {
+  flex-shrink: 0;
+}
+
+.volume-slider {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.3);
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.volume-value {
+  min-width: 45px;
+  text-align: right;
+  font-weight: bold;
+}
+
+.visualizer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 40px;
+  gap: 4px;
+  margin-top: 20px;
+}
+
+.visualizer .bar {
+  width: 6px;
+  background: white;
+  border-radius: 3px;
+  animation: visualize 0.5s ease-in-out infinite alternate;
+}
+
+.visualizer .bar:nth-child(1) {
+  height: 20px;
+  animation-delay: 0s;
+}
+
+.visualizer .bar:nth-child(2) {
+  height: 30px;
+  animation-delay: 0.1s;
+}
+
+.visualizer .bar:nth-child(3) {
+  height: 25px;
+  animation-delay: 0.2s;
+}
+
+.visualizer .bar:nth-child(4) {
+  height: 35px;
+  animation-delay: 0.3s;
+}
+
+.visualizer .bar:nth-child(5) {
+  height: 20px;
+  animation-delay: 0.4s;
+}
+
+@keyframes visualize {
+  from {
+    transform: scaleY(0.5);
+  }
+  to {
+    transform: scaleY(1.2);
+  }
+}
+
+@media (max-width: 600px) {
+  .radio-player {
+    padding: 20px;
+  }
+
+  .station-info {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .station-details {
+    width: 100%;
+  }
+
+  .player-controls {
+    flex-direction: column;
+  }
+
+  .volume-control {
+    width: 100%;
+    max-width: none;
+  }
+}
