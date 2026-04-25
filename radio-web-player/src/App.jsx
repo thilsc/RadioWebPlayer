@@ -12,6 +12,8 @@ function App() {
   const [allStations, setAllStations] = useState(stations);
   const [isLoading, setIsLoading] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const [detectedCountry, setDetectedCountry] = useState('');
+  const [filterByGenreFn, setFilterByGenreFn] = useState(null);
   const audioRef = useRef(null);
   
   // Detectar preferência de tema do sistema
@@ -45,14 +47,25 @@ function App() {
     }
   }, [volume]);
 
-  const handleSearchResults = (results) => {
-    setAllStations(results.length > 0 ? results : stations);
+  const handleSearchResults = (results, append = false) => {
+    if (append && Array.isArray(results)) {
+      setAllStations(prev => [...prev, ...results]);
+    } else if (typeof results === 'function') {
+      // Se for uma função (callback), usamos o resultado dela
+      setAllStations(results);
+    } else {
+      setAllStations(results.length > 0 ? results : stations);
+    }
     setCurrentStation(null);
     setIsPlaying(false);
   };
 
   const handleLoading = (loading) => {
     setIsLoading(loading);
+  };
+
+  const handleFilterByGenre = (fn) => {
+    setFilterByGenreFn(() => fn);
   };
 
   const handleSelectStation = (station) => {
@@ -87,6 +100,12 @@ function App() {
     setVolume(newVolume);
   };
 
+  const handleFilterByGenreClick = async (genre, country) => {
+    if (filterByGenreFn && country) {
+      await filterByGenreFn(genre, country);
+    }
+  };
+
   return (
     <div className="app">
       <button 
@@ -114,6 +133,7 @@ function App() {
         <SearchBar 
           onSearchResults={handleSearchResults}
           onLoading={handleLoading}
+          onFilterByGenre={handleFilterByGenre}
         />
 
         {isLoading && (
@@ -135,6 +155,8 @@ function App() {
           stations={allStations}
           currentStation={currentStation}
           onSelectStation={handleSelectStation}
+          onFilterByGenre={handleFilterByGenreClick}
+          currentCountry={detectedCountry}
         />
       </main>
 
