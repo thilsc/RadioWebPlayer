@@ -1,43 +1,61 @@
-# Windows image file caches
-Thumbs.db
-ehthumbs.db
+```
+# Dependencies
+node_modules/
 
-# Folder config file
-Desktop.ini
+# Build outputs
+dist/
+build/
+coverage/
+htmlcov/
 
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
+# Environment variables
+.env
+.env.local
+*.env.*
 
-# Windows Installer files
-*.cab
-*.msi
-*.msm
-*.msp
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
 
-# Windows shortcuts
-*.lnk
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
 
-# =========================
-# Operating System Files
-# =========================
-
-# OSX
-# =========================
-
+# OS files
 .DS_Store
-.AppleDouble
-.LSOverride
+Thumbs.db
 
-# Thumbnails
-._*
+# Logs
+*.log
 
-# Files that might appear on external disk
-.Spotlight-V100
-.Trashes
+# Temporary files
+*.tmp
+*.temp
 
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
+# Testing
+.mypy_cache/
+.pytest_cache/
+.coverage
+
+# Package managers
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Compiled assets
+public/build/
+src/assets/*.js
+src/assets/*.css
+
+# Lock files (though package-lock.json is in your repo)
+package-lock.json
+
+# Vite specific
+.vite/
+```
