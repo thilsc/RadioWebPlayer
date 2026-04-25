@@ -8,15 +8,43 @@ const SearchBar = ({ onSearchResults, onLoading }) => {
   const [countries, setCountries] = useState([]);
   const [tags, setTags] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
+  const [detectedCountry, setDetectedCountry] = useState('');
+  const [isDetecting, setIsDetecting] = useState(true);
+  
+  // Detectar país do usuário via geolocalização IP
+  useEffect(() => {
+    const detectUserCountry = async () => {
+      try {
+        const response = await fetch('https://ipapi.co/json/');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.country_name) {
+            setDetectedCountry(data.country_name);
+            setSelectedCountry(data.country_name);
+            // Auto-buscar estações do país do usuário
+            performSearchByCountry(data.country_name);
+          } else {
+            setIsDetecting(false);
+          }
+        } else {
+          setIsDetecting(false);
+        }
+      } catch (error) {
+        console.error('Erro ao detectar localização:', error);
+        setIsDetecting(false);
+      }
+    };
 
-  // Carregar países ao iniciar
+    detectUserCountry();
+  }, []);
+  
+  // Carregar países e tags ao iniciar
   useEffect(() => {
     const fetchCountries = async () => {
       try {
         const response = await fetch('https://de1.api.radio-browser.info/json/countries');
         if (response.ok) {
           const data = await response.json();
-          // Ordenar por número de estações e pegar top 50
           const sortedCountries = data
             .sort((a, b) => b.stationcount - a.stationcount)
             .slice(0, 50)
@@ -44,7 +72,55 @@ const SearchBar = ({ onSearchResults, onLoading }) => {
     fetchTags();
   }, []);
 
-  // Função de busca
+  // Função de busca por país (para geolocalização automática)
+  const performSearchByCountry = async (country) => {
+    onLoading(true);
+    
+    try {
+      let url = `https://de1.api.radio-browser.info/json/stations/bycountry/${encodeURIComponent(country)}?`;
+      const params = [];
+
+      params.push('order=votes');
+      params.push('reverse=true');
+      params.push('limit=50');
+      params.push('hidebroken=true');
+
+      url += params.join('&');
+
+      const response = await fetch(url);
+      
+      if (response.ok) {
+        const stations = await response.json();
+        
+        const formattedStations = stations
+          .filter(station => station.url_resolved)
+          .map((station, index) => ({
+            id: station.stationuuid || index,
+            name: station.name,
+            frequency: station.bitrate ? `${station.bitrate} kbps` : 'Online',
+            streamUrl: station.url_resolved,
+            logo: station.favicon || `https://ui-avatars.com/api/?name=${encodeURIComponent(station.name)}&background=random&size=128`,
+            genre: station.tags.split(',')[0] || 'Geral',
+            country: station.country,
+            votes: station.votes,
+            language: station.language || 'Unknown'
+          }))
+          .sort((a, b) => b.votes - a.votes);
+
+        onSearchResults(formattedStations);
+      } else {
+        onSearchResults([]);
+      }
+    } catch (error) {
+      console.error('Erro na busca:', error);
+      onSearchResults([]);
+    } finally {
+      onLoading(false);
+      setIsDetecting(false);
+    }
+  };
+
+  // Função de busca geral
   const performSearch = async () => {
     onLoading(true);
     
@@ -64,9 +140,8 @@ const SearchBar = ({ onSearchResults, onLoading }) => {
         params.push(`tag=${encodeURIComponent(selectedTag)}`);
       }
 
-      // Adicionar parâmetros de ordenação e limite
-      params.push('order=name');
-      params.push('reverse=false');
+      params.push('order=votes');
+      params.push('reverse=true');
       params.push('limit=50');
       params.push('hidebroken=true');
 
@@ -77,7 +152,6 @@ const SearchBar = ({ onSearchResults, onLoading }) => {
       if (response.ok) {
         const stations = await response.json();
         
-        // Transformar dados da API para o formato do app
         const formattedStations = stations
           .filter(station => station.url_resolved)
           .map((station, index) => ({
@@ -88,7 +162,8 @@ const SearchBar = ({ onSearchResults, onLoading }) => {
             logo: station.favicon || `https://ui-avatars.com/api/?name=${encodeURIComponent(station.name)}&background=random&size=128`,
             genre: station.tags.split(',')[0] || 'Geral',
             country: station.country,
-            votes: station.votes
+            votes: station.votes,
+            language: station.language || 'Unknown'
           }))
           .sort((a, b) => b.votes - a.votes);
 
@@ -128,11 +203,12 @@ const SearchBar = ({ onSearchResults, onLoading }) => {
           </svg>
           <input
             type="text"
-            placeholder="Buscar rádios por nome..."
+            placeholder={isDetecting ? "Detectando sua localização..." : detectedCountry ? `Rádios de ${detectedCountry}` : "Buscar rádios por nome..."}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             onKeyPress={handleKeyPress}
             className="search-input"
+            disabled={isDetecting}
           />
         </div>
         
@@ -187,6 +263,20 @@ const SearchBar = ({ onSearchResults, onLoading }) => {
 
           <button onClick={clearFilters} className="clear-filters-btn">
             Limpar Filtros
+          </button>
+        </div>
+      )}
+      
+      {detectedCountry && !isDetecting && (
+        <div className="location-indicator">
+          <svg viewBox="0 0 24 24" width="16" height="16">
+            <path fill="currentColor" d="M12,2A7,7 0 0,1 19,9C19,14.25 12,22 12,22C12,22 5,14.25 5,9A7,7 0 0,1 12,2M12,4A5,5 0 0,0 7,9C7,11.38 8.9,13.39 12,17.5C15.1,13.39 17,11.38 17,9A5,5 0 0,0 12,4M12,6A3,3 0 0,1 15,9A3,3 0 0,1 12,12A3,3 0 0,1 9,9A3,3 0 0,1 12,6Z" />
+          </svg>
+          <span>Mostrando rádios de: <strong>{detectedCountry}</strong></span>
+          <button onClick={() => { setDetectedCountry(''); setSelectedCountry(''); }} className="clear-location">
+            <svg viewBox="0 0 24 24" width="14" height="14">
+              <path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+            </svg>
           </button>
         </div>
       )}
